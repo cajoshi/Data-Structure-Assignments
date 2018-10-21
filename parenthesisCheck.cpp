@@ -1,107 +1,100 @@
-#include <iostream>
-#include <string.h>
+#include<iostream>
+#include<string.h>
 using namespace std;
 #define MAX 50
 
-class stClass
+class StClass
 {
+
 	struct stknode
 	{
-		char stack[50];
+		char stack[MAX];
 		int top;
 	}st;
+
 public:
-	stClass()
+	StClass()
 	{
-		st.top = -1;
+		st.top=-1;
 	}
 	void push(char);
 	char pop();
-	bool isempty(stknode);
 	int check(char exp[MAX]);
-	bool match(char a, char b);
+	 int match(char a, char b);
 };
-bool stClass::isempty(stknode st)
+
+int StClass:: check(char exp[])
 {
-	if(st.top == -1)
-		return true;
-	else
-		return false;
-}
-void stClass::push(char a)
-{
-	if(st.top != 49)
+	int i;
+	char temp;
+	int n= strlen(exp);
+	for(i=0;i<n;i++)
 	{
-		(st.top)++;
-		st.stack[st.top] = a;
-	}
-	else
-	{
-		cout << "----------------------" << endl;
-		cout << "The Stack is Full" << endl;
-	}
-}
-char stClass::pop()
-{
-	if(!isempty(st))
-	{
-		int k = st.top;
-		(st.top)--;
-		return st.stack[k];
-	}
-	else
-	{
-		return '0';
-	}
-}
-bool stClass::match(char a, char b)
-{
-	if(a == '[' && b == ']')
-		return true;
-	else if(a == '{' && b == '}')
-		return true;
-	else if(a == '(' && b == ')')
-		return true;
-	else
-		return false;
-}
-int stClass::check(char exp[])
-{
-	char temp1 ;
-	int flag = 0;
-	int n = strlen(exp);
-	for(int i = 0 ; i < n ; i++)
-	{
-		if((exp[i] == '(') || (exp[i] == '[') || (exp[i] == '{'))
+		if(exp[i]=='(' || exp[i]=='{' || exp[i]=='[')
+		push(exp[i]);
+		if(exp[i]==')' || exp[i]=='}' || exp[i]==']')
+		if(st.top==-1)
+		return 0;
+		else
 		{
-			push(exp[i]);
+			temp=pop();
+			if(!match(temp,exp[i]))
+			return 0;
 		}
-		else if(((exp[i] == ')') || (exp[i] == ']') || (exp[i] == '}')) && (!isempty(st)))
-		{
-			temp1 = pop();
-			if(temp1 == '0')
-			{
-				cout << "The stack is empty";
-			}
-			else if(match(temp1,exp[i]) && isempty(st))
-			{
-				cout << "Balanced Expression" << endl;
-				flag = 1;
-			}
-
-
-		}
-
 	}
-	if(flag == 0)
-		cout << "Unbalanced Expression" << endl;
+	if(st.top==-1)
+	return 1;
+	else
 	return 0;
 }
-int main() {
-	stClass o;
-	cout << "Enter Brackets: " ;
+
+int StClass::match(char a, char b)
+{
+	if(a=='[' && b==']')
+	return 1;
+	if(a=='{' && b=='}')
+	return 1;
+	if(a=='(' && b==')')
+	return 1;
+	return 0;
+}
+
+void StClass::push(char item)
+{
+	if(st.top==(MAX-1))
+	{
+		cout<<"Stack Overflow \n";
+		return;
+	}
+	st.top=st.top+1;
+	st.stack[st.top]=item;
+}
+
+char StClass::pop()
+{
+	if(st.top==-1)
+	{
+		cout<<"stack Underflow \n";
+	}
+	return(st.stack[st.top--]);
+}
+
+int main()
+{
 	char exp[MAX];
-	cin >> exp;
-	o.check(exp);
+	int status;
+	StClass obj;
+	cout<<"Enter a parenthesized expression: ";
+	cin>>exp;
+	status= obj.check(exp);
+	if(status==1)
+		cout<<"The expression is well paranthesized \n";
+	else
+		cout<<"The expression is not well paranthesized \n";
 	return 0;
 }
+
+
+
+
+
