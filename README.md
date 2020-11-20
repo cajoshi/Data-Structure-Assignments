@@ -1,2 +1,2 @@
 # Data-Structures
-My Implementation of the common datastructures used.
+My Implementation of the common Data Structures used.
